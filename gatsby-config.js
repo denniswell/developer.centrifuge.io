@@ -7,6 +7,8 @@ module.exports = {
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
+    `gatsby-plugin-sharp`,
+    `gatsby-transformer-sharp`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -17,16 +19,51 @@ module.exports = {
     {
       resolve: `gatsby-source-filesystem`,
       options: {
+        name: `chain`,
+        path: `${__dirname}/docs/chain`
+      }
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
         name: `tinlake`,
         path: `${__dirname}/docs/tinlake`
+      }
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `nfts`,
+        path: `${__dirname}/docs/nfts`
+      }
+    },
+    {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        name: 'images',
+        path: `${__dirname}/src/images`
       }
     },
     {
       resolve: `gatsby-mdx`,
       options: {
         extensions: [`.mdx`, `.md`],
-        hastPlugins: [require("rehype-slug")],
-
+        hastPlugins: [require("rehype-slug"), require("remark-math"), require("rehype-katex")],
+        gatsbyRemarkPlugins: [
+          {
+            resolve: `gatsby-remark-copy-linked-files`,
+            options: {
+              ignoreFileExtensions: [`png`, `jpg`, `jpeg`],
+            },
+          },
+          {
+            resolve: `gatsby-remark-images`,
+            options: {
+              backgroundColor: 'none',
+              disableBgImage: true
+            },
+          },
+        ],
       }
     },
     {
@@ -36,8 +73,6 @@ module.exports = {
       }
     },
     'gatsby-plugin-meta-redirect',
-    `gatsby-transformer-sharp`,
-    `gatsby-plugin-sharp`,
     `gatsby-plugin-sitemap`,
     `gatsby-plugin-styled-components`,
     `gatsby-plugin-catch-links`,
